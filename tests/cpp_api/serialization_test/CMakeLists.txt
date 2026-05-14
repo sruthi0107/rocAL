@@ -83,21 +83,18 @@ find_package(AMDRPP QUIET)
 include_directories(${ROCM_PATH}/include ${ROCM_PATH}/include/rocal)
 link_directories(${ROCM_PATH}/lib)
 
-# Source files
-file(GLOB Source_Files ./*.cpp)
-add_executable(${PROJECT_NAME} ${Source_Files})
-
 # OpenCV configuration
-if(${OpenCV_VERSION_MAJOR} GREATER_EQUAL 4)
-    message("-- OpenCV Found -- Version-${OpenCV_VERSION_MAJOR}.${OpenCV_VERSION_MINOR}.X Supported")
-    include_directories(${OpenCV_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES})
+if(OpenCV_FOUND)
+    if(${OpenCV_VERSION_MAJOR} GREATER_EQUAL 4)
+        message("-- OpenCV Found -- Version-${OpenCV_VERSION_MAJOR}.${OpenCV_VERSION_MINOR}.X Supported")
+        file(GLOB Source_Files ./*.cpp)
+        add_executable(${PROJECT_NAME} ${Source_Files})
+        include_directories(${OpenCV_INCLUDE_DIRS})
+        target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES} rocal)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall")
+    else()
+        message("-- WARNING: OpenCV Found -- Version-${OpenCV_VERSION_MAJOR}.${OpenCV_VERSION_MINOR}.X Not Supported -- ${PROJECT_NAME} requires OpenCV 4.0 or higher")
+    endif()
 else()
-    message(FATAL_ERROR "OpenCV Found -- Version-${OpenCV_VERSION_MAJOR}.${OpenCV_VERSION_MINOR}.X is not supported. OpenCV 4.0 or higher is required.")
+    message("-- WARNING: OpenCV Not Found -- ${PROJECT_NAME} will not be built")
 endif()
-
-# Compiler flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall")
-
-# Link libraries
-target_link_libraries(${PROJECT_NAME} rocal)

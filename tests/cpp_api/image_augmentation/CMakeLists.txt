@@ -56,30 +56,24 @@ find_package(OpenCV QUIET)
 include_directories(${ROCM_PATH}/include ${ROCM_PATH}/include/rocal)
 link_directories(${ROCM_PATH}/lib)
 
-add_executable(${PROJECT_NAME} image_augmentation.cpp)
-
 # OpenCV 3/4 Support
 if(OpenCV_FOUND)
-    if(${OpenCV_VERSION_MAJOR} GREATER_EQUAL 3 )
+    if(${OpenCV_VERSION_MAJOR} GREATER_EQUAL 3)
         message("-- OpenCV Found -- Version-${OpenCV_VERSION_MAJOR}.${OpenCV_VERSION_MINOR}.X Supported")
+        add_executable(${PROJECT_NAME} image_augmentation.cpp)
         target_compile_definitions(${PROJECT_NAME} PUBLIC ENABLE_OPENCV=1)
         include_directories(${OpenCV_INCLUDE_DIRS})
-        target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES})
+        target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES} rocal)
         if(${OpenCV_VERSION_MAJOR} GREATER_EQUAL 4)
             target_compile_definitions(${PROJECT_NAME} PUBLIC USE_OPENCV_4=1)
         else()
             target_compile_definitions(${PROJECT_NAME} PUBLIC USE_OPENCV_4=0)
         endif()
+        # -mf16c -- Support F16C built-in functions and code generation.
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mf16c -Wall ")
     else()
-        message("-- WARNING: OpenCV Found -- Version-${OpenCV_VERSION_MAJOR}.${OpenCV_VERSION_MINOR}.X Not Supported")
-        target_compile_definitions(${PROJECT_NAME} PUBLIC ENABLE_OPENCV=0)
+        message("-- WARNING: OpenCV Found -- Version-${OpenCV_VERSION_MAJOR}.${OpenCV_VERSION_MINOR}.X Not Supported -- ${PROJECT_NAME} will not be built")
     endif()
 else()
-    message("-- WARNING: OpenCV Not Found -- No Display Support")
-    target_compile_definitions(${PROJECT_NAME} PUBLIC ENABLE_OPENCV=0)
+    message("-- WARNING: OpenCV Not Found -- ${PROJECT_NAME} will not be built")
 endif()
-
-# Link Libraries & Set CXX Flags
-# -mf16c -- Support F16C built-in functions and code generation.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mf16c -Wall ")
-target_link_libraries(${PROJECT_NAME} rocal ${OpenCV_LIBRARIES} )

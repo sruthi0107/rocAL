@@ -57,6 +57,7 @@ find_path(ROCAL_INCLUDE_DIR NAMES rocal_api.h PATHS ${ROCM_PATH}/include/rocal)
 list(APPEND CMAKE_PREFIX_PATH ${ROCM_PATH}/lib/cmake)
 find_package(rocdecode 1.0.0 QUIET)
 find_package(rocjpeg 1.0.0 QUIET)
+find_package(OpenCV QUIET)
 
 if(ROCAL_LIBRARY AND ROCAL_INCLUDE_DIR)
     set(ROCAL_FOUND TRUE)
@@ -79,6 +80,7 @@ else()
     endif()
 endif(NOT ROCAL_FOUND)
 
+if(OpenCV_FOUND)
 # 1 - basic_test_cpu
 add_test(
   NAME
@@ -265,10 +267,14 @@ add_test(
             ${ROCM_PATH}/share/rocal/test/data/images/AMD-tinyDataSet 0
 )
 # 18 - serialization_test_gpu
-add_test(NAME serialization_test_gpu 
-              COMMAND serialization_test 
+add_test(NAME serialization_test_gpu
+              COMMAND serialization_test
               ${ROCM_PATH}/share/rocal/test/data/images/AMD-tinyDataSet 1
               WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/serialization_test)
+
+else()
+    message("-- ${Yellow}NOTE: OpenCV not found -- tests requiring OpenCV will not be available${ColourReset}")
+endif(OpenCV_FOUND)
 
 # 19 - checkpoint_save
 add_test(

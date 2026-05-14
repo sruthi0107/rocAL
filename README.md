@@ -148,11 +148,6 @@ rocAL can be currently used to perform the following operations either with rand
   sudo apt install ffmpeg libavcodec-dev libavformat-dev libavutil-dev libswscale-dev
   ```
 
-* [OpenCV](https://docs.opencv.org/4.6.0/index.html) -  **Optional** for source install, but required for package install
-  ```shell
-  sudo apt install libopencv-dev
-  ```
-
 * [PyBind11](https://github.com/pybind/pybind11) - Manual install
   * Source: `https://github.com/pybind/pybind11`
   * Tag: [v2.11.1](https://github.com/pybind/pybind11/releases/tag/v2.11.1)
@@ -174,7 +169,7 @@ rocAL can be currently used to perform the following operations either with rand
 >[!NOTE]
 > * All package installs are shown with the `apt` package manager. Use the appropriate package manager for your operating system.
 
-### Prerequisites setup script
+>### Prerequisites setup script
 
 For your convenience, we provide the setup script,[rocAL-setup.py](https://github.com/ROCm/rocAL/blob/develop/rocAL-setup.py), which installs all required dependencies. Run this script only once.
 
@@ -376,7 +371,6 @@ Review all notable [changes](CHANGELOG.md#changelog) with the latest release
 * RapidJSON - `https://github.com/Tencent/rapidjson`
 * PyBind11 - [v2.11.1](https://github.com/pybind/pybind11)
 * FFMPEG - `ffmpeg` dev package
-* OpenCV - `libopencv-dev` / [4.6.0](https://github.com/opencv/opencv/releases/tag/4.6.0)
 * libsndfile - [1.0.31](https://github.com/libsndfile/libsndfile/releases/tag/1.0.31)
 * Libtar - [v1.2.20](https://repo.or.cz/libtar.git)
 * rocAL Setup Script - `V4.1.0`
