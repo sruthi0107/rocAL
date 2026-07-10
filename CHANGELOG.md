@@ -11,6 +11,7 @@ Full documentation for rocLibrary is available at [https://rocm.docs.amd.com/pro
 * Adds support for voxel augmentations, random object bbox and ROI random cropping in rocAL.
 
 ### Removed
+* OpenCV is no longer a dependency. It has been removed from the core library, build, setup script, and C++ tests.
 * Removed building wheels for python.
 * `PipelineSerializer` class to implement pipeline serialization functionality in rocAL.
 * Python function execution support in rocAL.
@@ -19,6 +20,7 @@ Full documentation for rocLibrary is available at [https://rocm.docs.amd.com/pro
 * Introduce `NodeFactory` for dynamic node registration and creation.
 
 ### Changes
+* Optimized data distribution for the rocJPEG backend to improve multi-threaded decode throughput.
 * LMDB is now an optional dependency. When liblmdb is present at configure time, rocAL builds with Caffe/Caffe2 LMDB reader support; otherwise it builds without it.
 * Changes build instructions to omit building of wheels.
 * Adds new public APIs rocalSerialize(), rocalGetSerializedString(), and rocalDeserialize() for serializing and deserializing pipelines.
